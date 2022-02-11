@@ -1,46 +1,57 @@
-# Contract and NFT details
+해당 프로젝트는 원본 프로젝트를 연구해보기 위한 GIT 입니다.
+[원본](https://github.com/zeuslawyer/nft-sol-react.git)
 
-- This is a fun project only. dApp Front end is published [here](https://laughing-pike-52af82.netlify.app/).
+# Contract and# Contract and NFT details  
 
-- The contract address on [rinkeby etherscan](https://rinkeby.etherscan.io/address/0x8839ffafbbe34a84ede832db33a1bcc708afba08) is 0x03f6d53c4b337ee4d121db358baf33df8c71108c.
+- 이 프로젝트는 오직 재미를 위한 것으로 프론트 엔드 DApp은 여기에 개재했음 [here](https://laughing-pike-52af82.netlify.app/).
 
-- Minted NFTs can be seen on [Rinkeby OpenSea](https://testnets.opensea.io/account). They are goofy legal terminology ERC721 tokens.
+- 해당 컨트랙트 주소 [rinkeby etherscan](https://rinkeby.etherscan.io/address/0x8839ffafbbe34a84ede832db33a1bcc708afba08) 는  0x03f6d53c4b337ee4d121db358baf33df8c71108c.
+
+- 주조한 NFT는 여기서 볼 수 있음 [Rinkeby OpenSea](https://testnets.opensea.io/account), 여기는 테스트 넷으로 ERC721 token 들을 가지고 있음
 
 ![Goofy Legal NFTs](./opensea_screenshot.png)
 
 # Stack
 
-Hardhat, Solidity, JavaScript, [Alchemy](https://www.alchemy.com/) entrypoint to Ethereum node APIs.
+Hardhat, Solidity, JavaScript, [Alchemy](https://www.alchemy.com/) 이더리움 노드 API 진입점
+- Hardhat : truffle과 비슷하게 ethereum 개발을 할 때 compile, depoly, test를 모두 진행할 수 있는 프레임워크
+  둘 의 차이점은
+  - Hardhat 은 Verify 의 자동화가 가능하다 
+  - Hardhat 의 Typechain 플러그인을 통해 Typescript 를 지원
+  - Solidity 에서 로그를 사용 가능 (이 점을 통해, dApp의 개발 진입장벽을 낮춤과 편의성 향상)
 
-Smart contract deployed on Rinkeby Network.
+스마트 계약은 Rinkeby 네트워크에 배포함
+- Rinkeby : Kovan 테스트넷과 같이 Ropsten 의 Spam attack 문제를 방지하고자 만들었음, Kovan의 PoA 알고리즘이 필요 이상으로 복잡하고 다른 이더리움 클라이언트 구현 및 포함 되는 것이 어렵다는 이유로 이더리움팀에서 자체적으로 제작한 알고리즘 적용
+  - EVM(Ethereum Virtual Machine)에서 계약을 실행시키는 방식은 테스트넷에 큰 차이가 없음
 
-React frontend deployed on Netlify.
+리액트 프론트앤드는 Netlify에 배포
+- Netlify : 서버와의 통신 없이 (API 로만 통신) 프론트앤드 스택으로만 구성된 애플리케이션을 배포하는 서비스
 
 # Notes
 
-Run commands in the relevant directory, not in project root.
+실행 명령어는 루트 디렉토리가 아닌 관련 디렉토리에서 실행
 
-Use the Metamask Wallet Browser Extension
+메타마스크 브라우저 확장 기능 사용
 
-Use the Ethereum Rinkeby testnet.
+Rinkeby 이더리움 테스트넷 사용
 
 **ALWAYS REMEMBER...**
-Any time the contract is changed:
+계약이 변경된 경우:
 
-- Redeploy.
-- Update contract address in App.js.
-- Update ABI file in the frontend's `./abi` folder.
-- update the contract address constant in `App.js`
+- 재배포(한번 배포된 계약은 수정 불가능).
+- App.js에 계약 주소 업데이트
+- 프론트의 `./abi` ABI 파일 업데이트
+- `App.js`의 스마트 계약 주소 업데이트
 
 # Compile smart contract and deploy to local Hardhat chain
 
-**Run the following commands from inside the `evm` directory.**
+**`evm` 디렉토리에서 아래 명령어 실행**
 
-1. Run `npx hardhat run scripts/<scriptname.js>` from the project root. Ensure its the local script. This will test that the solidity compiles.
+1. 루트 경로에서 `npx hardhat run scripts/<scriptname.js>` 실행, 이건 로컬 스크립트인지 확인하고 솔리디티를 컴파일하여 테스트 함
 
-2. Run `npx hardhat run scripts/deploy.js --network rinkeby` to deploy to the testnet. Grab the contact address and assign it to the constant in `mintNFT()` in the ./dApp/src/App.js`.
+2. `npx hardhat run scripts/deploy.js --network rinkeby` 테스트넷에 배포하기 위함, 계약 주소를 가져와 `./dApp/src/App.js`의 'mintNFT()'에서 상수에 할당
 
-3. copy the freshly made `./evm/artifacts/contracts/EpicNFT.sol/EpicNFT.json` file to `./dApp/src/configs` so that the front end uses the latest ABI.
+3. 프런트 엔드가 최신 ABI를 사용하도록 새로 만든 `.evm/artifacts/contracts/EpicNFT.sol/EpicNFT.json` 파일을 `.dApp/src/configs`에 복사
 
 # Useful Reference Docs
 
