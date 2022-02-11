@@ -1,5 +1,4 @@
 import "./styles/App.css";
-import twitterLogo from "./assets/twitter-logo.svg";
 
 import { ethers } from "ethers";
 import epicNFT from "./abi/EpicNFT.json";
@@ -7,11 +6,9 @@ import epicNFT from "./abi/EpicNFT.json";
 import React from "react";
 
 // Constants
-const TWITTER_HANDLE = "zubinpratap";
-const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 const OPENSEA_LINK = "https://testnets.opensea.io/assets";
 const CONTRACT_ADDRESS = "0x8839FfaFbBE34A84EDe832db33A1BCC708afBa08";
-const RINKEBY_CHAIN_ID = "0x4";
+const NETWORK_ID = "0x3";
 
 const App = () => {
   const [currentUserAccount, setCurrentUserAccount] = React.useState("");
@@ -23,18 +20,19 @@ const App = () => {
     console.log("Connected to chain " + chainId);
 
     // String, hex code of the chainId of the Rinkebey test network
-    return returnedChainId !== RINKEBY_CHAIN_ID ? false : true;
+    return returnedChainId !== NETWORK_ID ? false : true;
   };
 
   const checkWalletConnected = async () => {
+    // 메타마스크 설치시 window.ethereum 객체 존재
     const { ethereum } = window;
     if (!ethereum) {
       alert("Please login to Metamask!");
     }
 
-    let ok = await confirmNetwork(ethereum, RINKEBY_CHAIN_ID);
+    let ok = await confirmNetwork(ethereum, NETWORK_ID);
     if (!ok) {
-      alert("You are not connected to the Rinkeby Test Network!");
+      alert("You are not connected to the Ropsten Test Network!");
       return;
     }
 
@@ -61,7 +59,7 @@ const App = () => {
         return;
       }
 
-      let ok = await confirmNetwork(ethereum, RINKEBY_CHAIN_ID);
+      let ok = await confirmNetwork(ethereum, NETWORK_ID);
       if (ok) {
         // Request accounts on wallet connect
         const accounts = await ethereum.request({
@@ -71,7 +69,7 @@ const App = () => {
         setCurrentUserAccount(accounts[0]);
         setupNFTMintedListener();
       } else {
-        alert("You are not connected to the Rinkeby Test Network!");
+        alert("You are not connected to the Ropsten Test Network!");
       }
     } catch (e) {
       console.error(e);
@@ -142,7 +140,7 @@ const App = () => {
         let nftTx = await connectedContract.makeEpicNFT();
         await nftTx.wait();
         console.log(
-          `Mined, see transaction: https://rinkeby.etherscan.io/tx/${nftTx.hash}`
+          `Mined, see transaction: https://Ropsten.etherscan.io/tx/${nftTx.hash}`
         );
       } else {
         console.error("ethereum object not found");
@@ -202,15 +200,6 @@ const App = () => {
               ? `${totalTokensMinted} / ${maxTokenSupply} minted.`
               : null}
           </p>
-        </div>
-        <div className="footer-container">
-          <img alt="Twitter Logo" className="twitter-logo" src={twitterLogo} />
-          <a
-            className="footer-text"
-            href={TWITTER_LINK}
-            target="_blank"
-            rel="noreferrer"
-          >{`built by @${TWITTER_HANDLE}`}</a>
         </div>
       </div>
     </div>
