@@ -8,35 +8,43 @@ import React from "react";
 // Constants
 const OPENSEA_LINK = "https://testnets.opensea.io/assets";
 const CONTRACT_ADDRESS = "0x8839FfaFbBE34A84EDe832db33A1BCC708afBa08";
-const NETWORK_ID = "0x3";
+const NETWORK_ID = "0x3"; // Ropsten 네트워크의 Chain Id
 
 const App = () => {
   const [currentUserAccount, setCurrentUserAccount] = React.useState("");
   const [totalTokensMinted, setTotalTokensMinted] = React.useState(0);
   const [maxTokenSupply, setMaxTokenSupply] = React.useState(50);
 
-  const confirmNetwork = async (ethereum, chainId) => {
-    let returnedChainId = await ethereum.request({ method: "eth_chainId" });
+  /**
+   * @param {string} chainId
+   * @desc 현재 네트워크의 ChainId의 16진수 코드가 NETWORK_ID와 같은지 체크
+   * @return {boolean} 체크 결과 값
+   */
+  async function confirmNetwork(ethereum, chainId) {
+    // RPC 호출
+    let returnedChainId = await ethereum.request({method: "eth_chainId"});
     console.log("Connected to chain " + chainId);
-
-    // String, hex code of the chainId of the Rinkebey test network
     return returnedChainId !== NETWORK_ID ? false : true;
-  };
+  }
 
-  const checkWalletConnected = async () => {
-    // 메타마스크 설치시 window.ethereum 객체 존재
-    const { ethereum } = window;
+  /**
+   * @desc 메타마스크와 연결 되었는지
+   * @return {boolean} 체크 결과 값
+   */
+  async function checkWalletConnected() {
+    // 메타마스크 설치시 window.ethereum 객체가 있음
+    const {ethereum} = window;
     if (!ethereum) {
       alert("Please login to Metamask!");
     }
-
-    let ok = await confirmNetwork(ethereum, NETWORK_ID);
-    if (!ok) {
+    if (!confirmNetwork(ethereum, NETWORK_ID)) {
       alert("You are not connected to the Ropsten Test Network!");
       return;
     }
 
-    const accounts = await ethereum.request({ method: "eth_accounts" });
+    // RPC 호출
+    // https://velog.io/@jakeseo_me/RPC%EB%9E%80
+    const accounts = await ethereum.request({method: "eth_accounts"});
 
     if (accounts.length !== 0) {
       // User has already connected wallet.
@@ -45,7 +53,7 @@ const App = () => {
     } else {
       console.warn("No authorized account found");
     }
-  };
+  }
 
   React.useEffect(() => {
     checkWalletConnected();
@@ -59,7 +67,7 @@ const App = () => {
         return;
       }
 
-      let ok = await confirmNetwork(ethereum, NETWORK_ID);
+      let ok = confirmNetwork(ethereum, NETWORK_ID);
       if (ok) {
         // Request accounts on wallet connect
         const accounts = await ethereum.request({

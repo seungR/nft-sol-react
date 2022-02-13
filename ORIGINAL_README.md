@@ -28,9 +28,9 @@ Use the Ethereum Rinkeby testnet.
 Any time the contract is changed:
 
 - Redeploy.
-- Update contract address in App.js.
+- Update contract address in app.js.
 - Update ABI file in the frontend's `./abi` folder.
-- update the contract address constant in `App.js`
+- update the contract address constant in `app.js`
 
 # Compile smart contract and deploy to local Hardhat chain
 
@@ -38,7 +38,7 @@ Any time the contract is changed:
 
 1. Run `npx hardhat run scripts/<scriptname.js>` from the project root. Ensure its the local script. This will test that the solidity compiles.
 
-2. Run `npx hardhat run scripts/deploy.js --network rinkeby` to deploy to the testnet. Grab the contact address and assign it to the constant in `mintNFT()` in the ./dApp/src/App.js`.
+2. Run `npx hardhat run scripts/deploy.js --network rinkeby` to deploy to the testnet. Grab the contact address and assign it to the constant in `mintNFT()` in the ./dApp/src/app.js`.
 
 3. copy the freshly made `./evm/artifacts/contracts/EpicNFT.sol/EpicNFT.json` file to `./dApp/src/configs` so that the front end uses the latest ABI.
 

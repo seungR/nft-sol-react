@@ -41,7 +41,7 @@ Rinkeby 이더리움 테스트넷 사용
 - 재배포(한번 배포된 계약은 수정 불가능).
 - App.js에 계약 주소 업데이트
 - 프론트의 `./abi` ABI 파일 업데이트
-- `App.js`의 스마트 계약 주소 업데이트
+- `app.js`의 스마트 계약 주소 업데이트
 
 # Compile smart contract and deploy to local Hardhat chain
 
@@ -49,7 +49,7 @@ Rinkeby 이더리움 테스트넷 사용
 
 1. 루트 경로에서 `npx hardhat run scripts/<scriptname.js>` 실행, 이건 로컬 스크립트인지 확인하고 솔리디티를 컴파일하여 테스트 함
 
-2. `npx hardhat run scripts/deploy.js --network rinkeby` 테스트넷에 배포하기 위함, 계약 주소를 가져와 `./dApp/src/App.js`의 'mintNFT()'에서 상수에 할당
+2. `npx hardhat run scripts/deploy.js --network rinkeby` 테스트넷에 배포하기 위함, 계약 주소를 가져와 `./dApp/src/app.js`의 'mintNFT()'에서 상수에 할당
 
 3. 프런트 엔드가 최신 ABI를 사용하도록 새로 만든 `.evm/artifacts/contracts/EpicNFT.sol/EpicNFT.json` 파일을 `.dApp/src/configs`에 복사
 
