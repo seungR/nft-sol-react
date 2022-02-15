@@ -43,11 +43,13 @@ const App = () => {
     }
 
     // RPC 호출
-    // https://velog.io/@jakeseo_me/RPC%EB%9E%80
+    // RPC : https://docs.metamask.io/guide/rpc-api.html#table-of-contents
+    // MetaMask Docs (rpc-api) : https://docs.metamask.io/guide/rpc-api.html#table-of-contents
+    // eth_accoutns : https://eth.wiki/json-rpc/API#eth_accounts, Returns a list of addresses owned by client.
+    // eth_accoutns 허가가 있어야지 eth_accoutns 를 요청할 수 있음
     const accounts = await ethereum.request({method: "eth_accounts"});
-
     if (accounts.length !== 0) {
-      // User has already connected wallet.
+      // 유저가 소유 지갑이 있을 경우, currentUserAccount 저장 및
       setCurrentUserAccount(accounts[0]);
       setupNFTMintedListener();
     } else {
@@ -59,6 +61,9 @@ const App = () => {
     checkWalletConnected();
   });
 
+  /**
+   * @desc 메타마스크 지갑 연결(로그인)
+   */
   const connectWallet = async () => {
     try {
       const { ethereum } = window;
@@ -70,6 +75,7 @@ const App = () => {
       let ok = confirmNetwork(ethereum, NETWORK_ID);
       if (ok) {
         // Request accounts on wallet connect
+        // eth_requestAccounts : 사용자가 식별 가능한 이더리움 주소를 제공하도록 요청, MetaMask 팝업 재생
         const accounts = await ethereum.request({
           method: "eth_requestAccounts",
         });
@@ -84,20 +90,28 @@ const App = () => {
     }
   };
 
+  /**
+   * @desc NFT 생성시 실행할 리스너 등록
+   */
   const setupNFTMintedListener = async () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
         // Same stuff again
+        // https://docs.ethers.io/v5/api/providers/
+        // provider : 쿼리를 보내거나 서명된 변경 상태 트랜잭션을 보내기 위해 이더리움 블록체인 연결을 추상화해줌
         const provider = new ethers.providers.Web3Provider(ethereum);
         const signer = provider.getSigner();
+        // Contract : 블록체인에 배포된 코드의 추상화
         const connectedContract = new ethers.Contract(
           CONTRACT_ADDRESS,
           epicNFT.abi,
           signer
         );
 
+        // https://docs.ethers.io/v5/api/contract/contract/#Contract--events
         // Listen to event
+        // Solidity 이벤트 실행시 리스너 작동
         connectedContract.on(
           "NewEpicNFTMinted",
           (sender, tokenId, maxTokens) => {
@@ -126,10 +140,15 @@ const App = () => {
     }
   };
 
+  /**
+   * @desc NFT 생성
+   */
   const mintNFT = async () => {
     try {
       const { ethereum } = window;
       if (ethereum) {
+        // 프로바이더 생성 및 계약 생성
+
         // Providers talk to ethereum nodes via a consistent interface to
         // standard Ethereum node functionality.
         // In my case, the provider will be from MetaMask, using metamask's nodes.
@@ -145,6 +164,7 @@ const App = () => {
           signer
         );
 
+        // EpicNFT.sol 의 makeEpicNFT 계약 실행
         let nftTx = await connectedContract.makeEpicNFT();
         await nftTx.wait();
         console.log(
@@ -162,7 +182,7 @@ const App = () => {
     setCurrentUserAccount("");
   };
 
-  // Render Methods
+  // Render Methods : 뷰를 위한 랜더링 메소드들
   const renderNotConnectedContainer = () => (
     <button
       className="cta-button connect-wallet-button"
