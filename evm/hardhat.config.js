@@ -17,6 +17,7 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 /**
  * @type import('hardhat/config').HardhatUserConfig
  */
+/*
 module.exports = {
   solidity: "0.8.0",
   networks: {
@@ -25,4 +26,15 @@ module.exports = {
       accounts: [`${keys.TEST_ACCOUNT_PRIVATE_KEY}`],
     },
   },
+};
+*/
+
+module.exports = {
+  solidity: "0.8.0",
+  networks: {
+    ropsten: {
+      url: `https://eth-ropsten.alchemyapi.io/v2/${keys.ALCHEMY_API_KEY}`,
+      accounts: [`${keys.TEST_ACCOUNT_PRIVATE_KEY}`]
+    }
+  }
 };

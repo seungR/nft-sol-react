@@ -213,7 +213,7 @@ const App = () => {
     <div className="App">
       <div className="container">
         <div className="header-container">
-          <p className="header gradient-text">My NFT Collection</p>
+          <p className="header gradient-text">NFT 컬랙션</p>
           <p className="sub-text">
             Tongue-in-Cheek Lawyer Tokens. Discover your NFT today.
           </p>

@@ -33,7 +33,8 @@ Hardhat, Solidity, JavaScript, [Alchemy](https://www.alchemy.com/) 이더리움 
 
 메타마스크 브라우저 확장 기능 사용
 
-Rinkeby 이더리움 테스트넷 사용
+~~Rinkeby 이더리움 테스트넷 사용~~
+=> master branch 에 경우 Ropsten 으로 변경 
 
 **ALWAYS REMEMBER...**
 계약이 변경된 경우:
@@ -52,6 +53,36 @@ Rinkeby 이더리움 테스트넷 사용
 2. `npx hardhat run scripts/deploy.js --network rinkeby` 테스트넷에 배포하기 위함, 계약 주소를 가져와 `./dApp/src/app.js`의 'mintNFT()'에서 상수에 할당
 
 3. 프런트 엔드가 최신 ABI를 사용하도록 새로 만든 `.evm/artifacts/contracts/EpicNFT.sol/EpicNFT.json` 파일을 `.dApp/src/configs`에 복사
+
+# Hardhat configuration
+`evm/hardhat.config.js`에서 사용할 `evm/keys.js` 파일 생성 및 설정 <br>
+필요 ) MetaMask private key, alchemy.com http key <br>
+document : https://hardhat.org/tutorial/deploying-to-a-live-network.html
+<pre><code>
+require("@nomiclabs/hardhat-waffle");
+
+// Go to https://www.alchemyapi.io, sign up, create
+// a new App in its dashboard, and replace "KEY" with its key
+const ALCHEMY_API_KEY = "KEY";
+
+// Replace this private key with your Ropsten account private key
+// To export your private key from Metamask, open Metamask and
+// go to Account Details > Export Private Key
+// Be aware of NEVER putting real Ether into testing accounts
+const ROPSTEN_PRIVATE_KEY = "YOUR ROPSTEN PRIVATE KEY";
+
+module.exports = {
+  solidity: "0.7.3",
+  networks: {
+    ropsten: {
+        url: `https://eth-ropsten.alchemyapi.io/v2/${ALCHEMY_API_KEY}`,
+        accounts: [`${ROPSTEN_PRIVATE_KEY}`]
+    }
+  }
+};
+</code></pre>
+- 실행할려면(ropsten 테스트넷 사용 기준) : npx hardhat run scripts/deploy.js --network ropsten
+
 
 # Useful Reference Docs
 

@@ -8,7 +8,7 @@ pragma solidity ^0.8.0;
 
 /// [MIT License]
 /// @title Base64
-/// @notice Provides a function for encoding some bytes in base64
+/// @notice Provides a function for encoding some bytes in base64, base64에서 일부 바이트를 인코딩하는 함수를 제공
 /// @author Brecht Devos <brecht@loopring.org>
 library Base64 {
     bytes internal constant TABLE = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

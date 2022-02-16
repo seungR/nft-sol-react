@@ -5,13 +5,19 @@ pragma solidity ^0.8.0;
 import {Base64} from "./libraries/Base64.sol";
 
 import "hardhat/console.sol";
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Strings.sol
 import "@openzeppelin/contracts/utils/Strings.sol";
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721URIStorage.sol
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+// https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Counters.sol
 import "@openzeppelin/contracts/utils/Counters.sol";
 
 // We inherit the contract we imported so we can access its methods.
+// ERC721 상속 받아서 메소드 접근, ERC721 : NFT 표준안
 contract EpicNFT is ERC721URIStorage {
     // OpenZeppelin helpers that help keep track of tokenIds.
+    // OpenZeppelin : Solidity 기반의 smart contract 를 개발하는 표준 프레임워크
+    // using 라이브러리 for 기본 데이터를 쓰는 것으로 해당 데이터 타입에서 라이브러리 기능을 쓸 수 있음.
     using Counters for Counters.Counter;
 
     // Unique token ids.  Initilizes at 0.
@@ -31,13 +37,16 @@ contract EpicNFT is ERC721URIStorage {
     string[] secondWords = ["Tome", "Mutatis", "Mutandis", "Sui-Generis", "Ipso-Facto", "Ceteris-Paribus"];
     string[] thirdWords = ["Gavel", "Wig", "Robe", "Timesheet", "Briefs", "Docket"];
 
+    // NewEpicNFTMinted 이벤트 생성
     event NewEpicNFTMinted(address sender, uint256 tokenId, uint256 maxTokens);
 
     // Pass the name of our NFT token and it's symbol.
+    // NFT 의 토큰 이름과 Symbol 을 넘김
     constructor() ERC721("zpNFT", "z-nfty") {
         console.log("This is my NFT contract. Lordy!");
     }
 
+    // app.js 에서 실행한 NFT 생성 Contract
     function makeEpicNFT() public {
         // Get the current tokenId. Starts at 0.
         uint256 newItemId = _tokenIds.current();
@@ -69,15 +78,20 @@ contract EpicNFT is ERC721URIStorage {
         );
 
         // Mint the NFT for the sender.
+        // 안전하게 _toeknID(newItemId)를 생성하고 _to(msg.sender)에게 전달
+        // https://docs.openzeppelin.com/contracts/4.x/api/token/erc721#ERC721-_safeMint-address-uint256-
         _safeMint(msg.sender, newItemId);
 
         // Set the minted NFT's data.
+        // 생성된 NFT 에 데이터 세팅
         string memory tokenData = string(abi.encodePacked("data:application/json;base64,", json));
 
         console.log("\n--------------------");
         console.log(tokenData);
         console.log("--------------------\n");
 
+        // https://docs.openzeppelin.com/contracts/4.x/api/token/erc721#ERC721URIStorage-_setTokenURI-uint256-string-
+        // _tokenURI(tokenData)을 tokenID(newItemId)의 tokenURI에 세팅
         _setTokenURI(newItemId, tokenData);
         console.log("A NFT with id %d has been minted for sender %s", newItemId, msg.sender);
 
